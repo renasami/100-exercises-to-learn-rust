@@ -4,8 +4,12 @@
 //  Look at the compiler error to get familiar with what it looks like.
 //  Then delete the code below and move on to the next exercise.
 
-impl PartialEq for u32 {
+pub struct MyU32 {
+    value: u32,
+}
+
+impl PartialEq for MyU32 {
     fn eq(&self, _other: &Self) -> bool {
-        todo!()
+        self.value == _other.value
     }
 }
