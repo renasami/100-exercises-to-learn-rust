@@ -7,7 +7,7 @@
 // we can only verify that it produces the correct result.
 // You _could_ pass this test by just returning `v.iter().sum()`,
 // but that would defeat the purpose of the exercise.
-//
+
 // Hint: you won't be able to get the spawned threads to _borrow_
 // slices of the vector directly. You'll need to allocate new
 // vectors for each half of the original vector. We'll see why
@@ -15,7 +15,20 @@
 use std::thread;
 
 pub fn sum(v: Vec<i32>) -> i32 {
-    todo!()
+    if v.is_empty() {
+        return 0;
+    }
+
+    let mid = v.len() / 2;
+    let left = v[..mid].to_vec();
+    let right = v[mid..].to_vec();
+
+    let handle_left = thread::spawn(move || left.iter().sum::<i32>());
+
+    let handle_right = thread::spawn(move || right.iter().sum::<i32>());
+
+    // 両スレッドの結果を待って合計する
+    handle_left.join().unwrap() + handle_right.join().unwrap()
 }
 
 #[cfg(test)]
